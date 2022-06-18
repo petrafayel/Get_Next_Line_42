@@ -57,7 +57,7 @@ char	*get_next_line(int fd)
 	if (ft_strchr(newline, '\n'))
 	{
 		temp = line;
-		line = (char *)(line + (ft_strlen(newline) + 1));
+		line = (char *)(line + (ft_strlen(newline)));
 		free (temp);
 	}
 	return (newline);
