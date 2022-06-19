@@ -3,33 +3,23 @@
 char	*ft_line(char	*s)
 {
 	int	i;
-	int	j;
-	char	*line;
+	char	*tmp;
 
 	i = 0;
-	j = 0;
-	if (!s || s[0] == '\0')
+	if (!*s)
 		return (NULL);
+	tmp = NULL;
 	while (s[i])
 	{
 		if (s[i] == '\n')
 		{
-			line = (char *)malloc((sizeof(char) * i) + 2);
-			if (!line)
-				return (NULL);
-			while (j < i)
-			{
-				line[j] = s[j];
-				j++;
-			}
-			line[j] = '\n';
-			line[j + 1] = '\0';
+			tmp = ft_substr(s, 0, i + 1);
+			return (tmp);
 		}
 		i++;
 	}
-	if (!line)
-		return (s);
-	return (line);
+	tmp = ft_strdup(s);
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
@@ -50,15 +40,20 @@ char	*get_next_line(int fd)
 			line = ft_strdup(buffer);
 		else
 			line = ft_strjoin(line, buffer);
-		if (ft_strchr(buffer, '\n') || size == 0)
+		if (size == 0 || ft_strchr(buffer, '\n'))
 			break ;
 	}
 	newline = ft_line(line);
-	if (ft_strchr(newline, '\n'))
+	if (ft_newline(line) > -1)
 	{
 		temp = line;
-		line = (char *)(line + (ft_strlen(newline)));
+		line = ft_substr(line, ft_newline(line) + 1, ft_strlen(line) - ft_strlen(newline));
 		free (temp);
+	}
+	else
+	{
+		free (line);
+		line = NULL;
 	}
 	return (newline);
 }
