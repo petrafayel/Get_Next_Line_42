@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_line(char	*s)
 {
@@ -57,25 +57,25 @@ char	*ft_readline(int fd, char *s)
 
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static char	*line[OPEN_MAX];
 	char		*temp;
 	char		*newline;
 
-	line = ft_readline(fd, line);
-	if (!line)
+	line[fd] = ft_readline(fd, line[fd]);
+	if (!line[fd])
 		return (NULL);
-	newline = ft_line(line);
-	if (ft_newline(line) > -1)
+	newline = ft_line(line[fd]);
+	if (ft_newline(line[fd]) > -1)
 	{
-		temp = line;
-		line = ft_substr(line, ft_newline(line) + 1, \
-				ft_strlen(line) - (ft_strlen(newline)));
+		temp = line[fd];
+		line[fd] = ft_substr(line[fd], ft_newline(line[fd]) + 1, \
+				ft_strlen(line[fd]) - (ft_strlen(newline)));
 		free (temp);
 	}
 	else
 	{
-		free (line);
-		line = NULL;
+		free (line[fd]);
+		line[fd] = NULL;
 	}	
 	return (newline);
 }
